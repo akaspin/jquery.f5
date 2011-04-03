@@ -331,7 +331,7 @@
 				};
 
 				// Bind and validate
-				$$.bind('keyup focus blur', validate);
+				$$.bind('keyup change', validate);
 				domField.control.validate();
 
 				// Define setCustomValidity method
@@ -358,17 +358,11 @@
 
 	$.fn.f5 = function(options) {
 		var settings = {
-			submit : function() { // Submit
-				return true;
-			},
-			validators : {}, // Validators
-			poll : 300, // Poll time in milliseconds
 			classes : {
 				valid : 'valid',
 				invalid : 'invalid',
 				required : 'required',
 				placeholder : 'placeholder',
-				pending : 'pending'
 			},
 			messages : {
 				required : "Please fill out this field.",
@@ -387,14 +381,6 @@
 
 		return this.filter('form').each(function() {
 			var $form = $(this);
-
-			// if already binded - do nothing
-			if ($form.data('f5'))
-				return;
-
-			$form.data('f5', {
-				members : []
-			});
 
 			$(':input:not(:submit):not(:reset)', $form).each( function() {
 				var $field = $(this); // jQuery

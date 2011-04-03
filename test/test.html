@@ -12,6 +12,7 @@
 
 <script type="text/javascript" src="http://yandex.st/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="../jquery.f5.js"></script>
+<script type="text/javascript" src="../jquery.f51.js"></script>
         
 <title>jquery.f5 Test</title>
 </head>
@@ -22,8 +23,7 @@
 <form id='f'>
 <fieldset><legend>Text</legend>
 	<label><input name='f1_1' 
-	    type='text'
-        placeholder="Unrestricted"></label>
+	    type='text'></label>
 	<label>Required<input name='f1_2' 
 	    type='text' 
 	    required
@@ -32,12 +32,19 @@
 	    type='text' 
 	    pattern="^pattern$"
 	    placeholder='Type "pattern"'></label>
+	<label>Async validation<input name='f1_4' 
+	    type='text'
+	    validate='async3' 
+	    placeholder='Type "async" an wait 3 seconds'></label>
+	<label>Recuired async validation<input name='f1_5' 
+	    type='text'
+	    required validate='async1' 
+	    placeholder='Type "async" an wait 1 second'></label>
 </fieldset>
 
 <fieldset><legend>E-Mail</legend>
 	<label><input name='f2_1' 
-	    type='email'
-	    placeholder="Unrestricted"></label>
+	    type='email'></label>
 	<label>Required<input name='f2_2' 
 	    type='email' 
 	    required
@@ -46,8 +53,7 @@
 
 <fieldset><legend>Password</legend>
 	<label><input name='f3_1'
-	    type='password' 
-	    placeholder="Unrestricted">
+	    type='password'>
 	</label>
 	<label>Required<input name='f3_2' 
 	    type='password' 
@@ -58,8 +64,7 @@
 
 <fieldset><legend>url</legend>
 	<label><input name='f4_1' 
-	    type='url'
-	    placeholder="Unrestricted"></label>
+	    type='url'></label>
 	<label>Required<input name='f4_2' 
 	    type='url' 
 	    required
@@ -68,8 +73,7 @@
 
 <fieldset><legend>number</legend>
 	<label><input name='f5_1' 
-	    type='number'
-	    placeholder="Unrestricted"></label>
+	    type='number'></label>
 	<label>required<input name='f5_2' 
 	    type='number' 
 	    required
@@ -77,8 +81,7 @@
 </fieldset>
 
 <fieldset><legend> textarea </legend>
-	<label>Textarea<textarea name='f20_1'
-	    placeholder="Textarea"></textarea></label>
+	<label>Textarea<textarea name='f20_1'></textarea></label>
 	<label>Textarea, required<textarea name='f20_2'
 	    required
 	    placeholder="Required"></textarea></label>
@@ -89,17 +92,21 @@
 
 <script type="text/javascript">
 $('#f').ready(function(){
-    $('#f').f5({
+    $('#f').f51({
         submit: function() {
             console.log($(this).serialize());
             return false;
         },
         validators: {
-            async: function(value, callback) {
+            async3: function(value, callback) {
                 setTimeout(function() {
-                    console.log('checkAsync');
-                    value == 'async' ? callback() : callback('Type async.') 
-                }, 3000);
+                    value == 'async' ? callback() : callback('Not "async".') 
+                }, 1000);
+            },
+            async1: function(value, callback) {
+                setTimeout(function() {
+                    value == 'async' ? callback() : callback('Not "async".') 
+                }, 1000);
             }
         }
     });

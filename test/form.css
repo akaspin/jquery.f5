@@ -91,6 +91,9 @@ input[type=number]:valid,
 textarea:valid {
     border-color: #CDC !important;
 }
+.pending {
+    border-color: #F00 !important;
+}
 .placeholder {
     color: #777 !important;
     background-image: none !important; /* Fix for opera */
