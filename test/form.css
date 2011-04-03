@@ -1,0 +1,100 @@
+form {
+}
+
+fieldset {
+    border: 1px solid #CCC;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 30%;
+    float: left;
+}
+	
+label {
+    display: block;
+    margin-bottom: .3em;
+}
+
+input:focus {
+    font-weight: bold;
+}
+
+input[type=text],
+input[type=url],
+input[type=tel],
+input[type=number],
+input[type=color],
+input[type=email],
+input[type=password],
+textarea {
+    width: 96%;
+    margin: .3em 0 .3em 0;
+    padding: .3em;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+button,
+input[type=submit],
+input[type=file] {
+    margin: .2em 0;
+    padding: .3em 1em;
+    font-family: sans-serif;
+    float:left;
+    clear: both;
+}
+
+input[type=text].invalid, 
+input[type=email].invalid, 
+input[type=password].invalid, 
+input[type=url].invalid, 
+input[type=number].invalid, 
+textarea.invalid {
+    border-color: #DCC !important;
+}
+
+input[type=text]:invalid, 
+input[type=email]:invalid, 
+input[type=password]:invalid, 
+input[type=url]:invalid, 
+input[type=number]:invalid, 
+textarea:invalid {
+    border-color: #DCC !important;
+}
+
+input:focus:invalid, 
+textarea:focus:invalid {
+    background-color: #FFF9F9 !important;
+}
+
+input:focus:valid, 
+textarea:focus:valid {
+    background-color: #F9FFF9 !important;
+}
+
+input[type=text].valid, 
+input[type=email].valid, 
+input[type=password].valid, 
+input[type=url].valid, 
+input[type=number].valid, 
+textarea.valid {
+    border-color: #CDC !important;
+}
+
+input[type=text]:valid, 
+input[type=email]:valid, 
+input[type=password]:valid, 
+input[type=url]:valid, 
+input[type=number]:valid, 
+textarea:valid {
+    border-color: #CDC !important;
+}
+.placeholder {
+    color: #777 !important;
+    background-image: none !important; /* Fix for opera */
+}
+input::-webkit-input-placeholder, input:-moz-placeholder {
+    color: #777 !important;
+}
