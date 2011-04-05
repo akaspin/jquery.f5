@@ -12,15 +12,14 @@
 
 <script type="text/javascript" src="http://yandex.st/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="../jquery.f5.js"></script>
-<script type="text/javascript" src="../jquery.f51.js"></script>
         
-<title>jquery.f5 Test</title>
+<title>jquery.f5 with forced error messages</title>
 </head>
 
 <body>
-<h1>jquery.f5 Test</h1>
-
-<form id='f'>
+<h1>jquery.f5 example</h1>
+<p>With forsed error messages.</p>
+<form id='f' >
 <fieldset><legend>Text</legend>
 	<label><input name='f1_1' 
 	    type='text'></label>
@@ -31,15 +30,7 @@
 	<label>Pattern<input name='f1_3' 
 	    type='text' 
 	    pattern="^pattern$"
-	    placeholder='Type "pattern"'></label>
-	<label>Async validation<input name='f1_4' 
-	    type='text'
-	    validate='async3' 
-	    placeholder='Type "async" an wait 3 seconds'></label>
-	<label>Recuired async validation<input name='f1_5' 
-	    type='text'
-	    required validate='async1' 
-	    placeholder='Type "async" an wait 1 second'></label>
+	    placeholder='Type "pattern" or left blank'></label>
 </fieldset>
 
 <fieldset><legend>E-Mail</legend>
@@ -92,24 +83,7 @@
 
 <script type="text/javascript">
 $('#f').ready(function(){
-    $('#f').f51({
-        submit: function() {
-            console.log($(this).serialize());
-            return false;
-        },
-        validators: {
-            async3: function(value, callback) {
-                setTimeout(function() {
-                    value == 'async' ? callback() : callback('Not "async".') 
-                }, 1000);
-            },
-            async1: function(value, callback) {
-                setTimeout(function() {
-                    value == 'async' ? callback() : callback('Not "async".') 
-                }, 1000);
-            }
-        }
-    });
+    $('#f').f5({error:{force:true}});
 });
 </script>
 </body>

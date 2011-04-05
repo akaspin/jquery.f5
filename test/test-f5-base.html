@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<!--[if lt IE 9]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="form.css">
+
+<script type="text/javascript" src="http://yandex.st/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../jquery.f5.js"></script>
+        
+<title>jquery.f5 basic example</title>
+</head>
+
+<body>
+<h1>jquery.f5 basic example</h1>
+<p>No overriden by default.</p>
+<form id='f' >
+<fieldset><legend>Text</legend>
+	<label><input name='f1_1' 
+	    type='text'></label>
+	<label>Required<input name='f1_2' 
+	    type='text' 
+	    required
+	    placeholder="Required"></label>
+	<label>Pattern<input name='f1_3' 
+	    type='text' 
+	    pattern="^pattern$"
+	    placeholder='Type "pattern" or left blank'></label>
+</fieldset>
+
+<fieldset><legend>E-Mail</legend>
+	<label><input name='f2_1' 
+	    type='email'></label>
+	<label>Required<input name='f2_2' 
+	    type='email' 
+	    required
+	    placeholder="Required"></label>
+</fieldset>
+
+<fieldset><legend>Password</legend>
+	<label><input name='f3_1'
+	    type='password'>
+	</label>
+	<label>Required<input name='f3_2' 
+	    type='password' 
+	    required 
+	    placeholder="Required">
+	</label>
+</fieldset>
+
+<fieldset><legend>url</legend>
+	<label><input name='f4_1' 
+	    type='url'></label>
+	<label>Required<input name='f4_2' 
+	    type='url' 
+	    required
+	    placeholder="Required"></label>
+</fieldset>
+
+<fieldset><legend>number</legend>
+	<label><input name='f5_1' 
+	    type='number'></label>
+	<label>required<input name='f5_2' 
+	    type='number' 
+	    required
+	    placeholder="Required"></label>
+</fieldset>
+
+<fieldset><legend> textarea </legend>
+	<label>Textarea<textarea name='f20_1'></textarea></label>
+	<label>Textarea, required<textarea name='f20_2'
+	    required
+	    placeholder="Required"></textarea></label>
+</fieldset>
+	
+	<input type="submit" value="Submit">
+</form>
+
+<script type="text/javascript">
+$('#f').ready(function(){
+    $('#f').f5();
+});
+</script>
+</body>
+</html>

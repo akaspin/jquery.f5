@@ -1,28 +1,32 @@
 (function($) {
 	
 	/**
+	 * Returns true if vield error generated in async phase.
+	 * 
+	 */
+	var isAsyncClear = function(field) {
+		var async = field.control.async;
+		
+		return !async.error || async.message == field.validationMessage;
+	}
+	
+	/**
 	 * Get validity without customError
 	 */
-	var fakeValidity = function($$) {
-		var field = $$.get(0);
-		var async = field.control.async;
+	var isSysValid = function(field) {
 		var validity = field.validity;
 
-		var result = (async.error == validity.customError 
-				   	  && async.message == field.validationMessage
-				      && (!validity.valueMissing
-							&& !validity.tooLong
-							&& !validity.typeMismatch
-							&& !validity.patternMismatch
-							&& !validity.rangeOverflow
-							&& !validity.rangeUnderflow 
-							&& !validity.stepMismatch));
-		
-		return result;
+		return (!validity.valueMissing
+				&& !validity.tooLong
+				&& !validity.typeMismatch
+				&& !validity.patternMismatch
+				&& !validity.rangeOverflow
+				&& !validity.rangeUnderflow 
+				&& !validity.stepMismatch);
 	};
 	
 	/**
-	 * 
+	 * Set async op state
 	 */
 	var setAsyncState = function($$, msg, opts) {
 		var domField = $$.get(0);
@@ -36,6 +40,9 @@
 		}
 	}
 	
+	/**
+	 * Setup field
+	 */
 	var setupField = function($$, form, opts) {
 		var field = $$.get(0); 
 
@@ -46,60 +53,67 @@
 				// op defined - bind it
 				field.control.async = {
 					value: '', 		// Last value
-					pending: false,	// Pending state
+					pending: undefined,	// Pending state
 					error: false,	// Error state
 					message: ''
 				};
 				
-				$$.bind('keyup change', function() {
+				$$.bind('input change', function() {
 					var $$ = $(this);
 					var field = $$.get(0);
 					var value = field.control.value();
 					var async = field.control.async;
 					
-					if (!!value && async.value !== value) {
+					var clearAsync = function() {
+						setAsyncState($$, '', opts);
+						clearTimeout(async.pending);
+						async.value = field.control.value();
+						form.trigger('state');
+					}
+					
+					if (!isAsyncClear(field)) {
+						// Custom errors present - clear async
+						clearAsync();
+						return;
+					}
+					
+					// Now async state must be clear
+					// Check for "system" validity
+					if (!isSysValid(field) || !!!value) {
+						// Not clean
+						field.setCustomValidity();
+						clearAsync();
+						return;
+					}
+					
+					// Ok. all clean. 
+					if (async.value !== value) {
 						async.value = value;
-						// If pending - clear it
-						if (async.pending != false) {
-							clearTimeout(async.pending);
-							async.pending = false;
-						}
+						clearTimeout(async.pending);
 						
-						// Discover state:
-						if (fakeValidity($$)) {
-							
-							// ok. Set pending states
-							setAsyncState($$, opts.messages.pending, opts);
-							field.setCustomValidity(opts.messages.pending);
-							
-							// And fire op
-							async.pending = setTimeout(function() {
-								op(value, function(msg) {
-									var async = field.control.async;
-									var message = msg || '';
-									if (field.control.value() == async.value) {
-										async.pending = false;
-
-										if (fakeValidity($$)) {
-											setAsyncState($$, message, opts);
-											field.setCustomValidity(message);
-											form.trigger('state');
-										} else {
-											setAsyncState($$, '', opts);
-										}
-										
-									}
-								});
-							}, opts.poll);
-							
-						} else {
-							// Another message
-							setAsyncState($$, '', opts);
-						}
+						setAsyncState($$, opts.messages.pending, opts);
+						field.setCustomValidity(opts.messages.pending);
+						field.checkValidity();
+						
+						async.pending = setTimeout(function() {
+							op.apply(field, [function(newMsg) {
+								newMsg = newMsg || '';
+								if (field.control.value() == async.value
+										&& isAsyncClear(field) 
+										&& isSysValid(field)) {
+									setAsyncState($$, newMsg, opts);
+									field.setCustomValidity(newMsg);
+									form.trigger('state');
+								} else {
+									clearAsync();
+									form.trigger('state');
+								}
+							}]);
+						}, opts.poll);
 					}
 				});
 			} else {
-				$$.bind('keyup change', function() {
+				$$.bind('input change', function() {
 					form.trigger('state');
 				});
 			};
@@ -108,17 +122,14 @@
 	
 	$.fn.f51 = function(options) {
 		var settings = {
-			classes: {
-				pending: 'pending'
-			},
-			messages: {
-				pending: 'Checking...'
-			},
+			classes: { pending: 'pending' },
+			messages: { pending: 'Checking...' },
+			error: { force: true },
 			submit: function() { // Submit
 				return true;
 			},
 			validators: {}, // Validators
-			poll : 300 // Poll time in milliseconds
+			poll : 500 // Poll time in milliseconds
 		}
 
 		if (options) {
@@ -135,7 +146,7 @@
 			
 			$form.bind('state', function() {
 				if (!!$(":input", this).filter(function() {
-					return this.validity && !this.validity.valid;
+						return this.validity && this.checkValidity();
 					}).length) {
 					$(':submit', this).attr("disabled", "true");
 				} else {

@@ -1,99 +1,115 @@
-form {
+/* IE not correctly works with CSS ":not" polyfills in dynamic with
+   http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js */
+
+/* fix for webkit */
+body { -webkit-animation: bugfix infinite 1s; }
+@-webkit-keyframes bugfix { from { padding: 0; } to { padding: 0; } }
+
+h1, p {
+    margin-left: 1%;
 }
 
 fieldset {
+    margin: 0 1%;
     border: 1px solid #CCC;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    width: 30%;
+    width: 28%;
     float: left;
 }
 	
 label {
+    margin: 0 .3em;
     display: block;
     margin-bottom: .3em;
 }
 
-input:focus {
-    font-weight: bold;
-}
-
-input[type=text],
-input[type=url],
-input[type=tel],
-input[type=number],
-input[type=color],
-input[type=email],
-input[type=password],
-textarea {
-    width: 96%;
-    margin: .3em 0 .3em 0;
-    padding: .3em;
-    border: 1px solid #CCC;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-}
-
-button,
-input[type=submit],
-input[type=file] {
-    margin: .2em 0;
+/*** buttons ***/
+button, input[type=submit], input[type=file] {
+    margin: .5em 1%;
     padding: .3em 1em;
     font-family: sans-serif;
     float:left;
     clear: both;
 }
 
-input[type=text].invalid, 
-input[type=email].invalid, 
-input[type=password].invalid, 
-input[type=url].invalid, 
-input[type=number].invalid, 
-textarea.invalid {
+/***** inputs *****/
+
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=number],
+input[type=password],
+textarea {
+    width: 96%;
+    margin: .3em 0;
+    padding: .3em;
+    border: 2px solid #CCC;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+/* invalid inputs */
+input.invalid, input:invalid, 
+textarea:invalid, textarea.invalid {
     border-color: #DCC !important;
 }
 
-input[type=text]:invalid, 
-input[type=email]:invalid, 
-input[type=password]:invalid, 
-input[type=url]:invalid, 
-input[type=number]:invalid, 
-textarea:invalid {
-    border-color: #DCC !important;
+input:invalid:focus, input.invalid:focus, 
+textarea:invalid:focus, textarea.invalid:focus{
+    background-color: #FFF9F9;
 }
 
-input:focus:invalid, 
-textarea:focus:invalid {
-    background-color: #FFF9F9 !important;
-}
-
-input:focus:valid, 
-textarea:focus:valid {
-    background-color: #F9FFF9 !important;
-}
-
-input[type=text].valid, 
-input[type=email].valid, 
-input[type=password].valid, 
-input[type=url].valid, 
-input[type=number].valid, 
-textarea.valid {
+/* valid inputs */
+input[type=text].valid, input[type=text]:valid,
+input[type=email].valid, input[type=email]:valid,
+input[type=url].valid, input[type=url]:valid,
+input[type=number].valid, input[type=number]:valid,
+input[type=password].valid, input[type=password]:valid,
+textarea:valid, textarea.valid {
     border-color: #CDC !important;
 }
 
-input[type=text]:valid, 
-input[type=email]:valid, 
-input[type=password]:valid, 
-input[type=url]:valid, 
-input[type=number]:valid, 
-textarea:valid {
-    border-color: #CDC !important;
+input[type=text].valid:focus, input[type=text]:valid:focus,
+input[type=email].valid:focus, input[type=email]:valid:focus,
+input[type=url].valid:focus, input[type=url]:valid:focus,
+input[type=number].valid:focus, input[type=number]:valid:focus,
+input[type=password].valid:focus, input[type=password]:valid:focus,
+textarea:valid:focus, textarea.valid:focus {
+    background-color: #F9FFF9;
 }
-.pending {
-    border-color: #F00 !important;
+
+/* pending state for f51 */
+input.pending {
+    border-color: #DDC !important;
 }
+input.pending:focus {
+    background-color: #FFFFF9;
+}
+
+/*** Error messages ***
+  By default, messages handling as `<span class='error'></span>`. See readme.
+*/
+.error {
+    color: #600;
+    display: none;
+}
+
+/* Standart errors */
+input.invalid:focus ~ .error, textarea.invalid:focus ~ .error,
+input:invalid:focus ~ .error, textarea:invalid:focus ~ .error  {
+    display: block;
+}
+
+/* Pending messages for f51 */
+input.pending:focus ~ .error, textarea.pending:focus ~ .error {
+    color: #777;
+    display: block;
+}
+
+/***** Placeholder *****/
 .placeholder {
     color: #777 !important;
     background-image: none !important; /* Fix for opera */
