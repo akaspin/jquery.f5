@@ -19,8 +19,7 @@ Only one dependency - [jQuery](http://jquery.com/).
 ## Usage
 
 Add [jQuery](http://jquery.com/) and *jQuery.f5* scripts to your site and 
-fire 'f5'. For *MSIE* you may need IE HTML5 polyfiller like 
-[ie7-js](http://ie7-js.googlecode.com). 
+fire 'f5'. 
 
 You can find basic example in `tests/test-f5-base.html`.
 
