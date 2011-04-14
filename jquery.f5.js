@@ -363,7 +363,7 @@
 				$(this.control.error).text(this.validationMessage);
 			})
 			if ($.browser.msie) {
-				// IE not redraw CSS "+" rules
+				// IE not redraw CSS "+" or "~" rules
 				$$.bind('valid', function() {
 					$(this.control.error).text('');
 				})

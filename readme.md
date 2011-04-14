@@ -136,10 +136,10 @@ same names. So you need to define this rules in CSS:
     
 Avoid to use `:not` pseudo-selector. *IE* handles it incorrectly.
 
-Another bug in IE is ignoring `.` rule after same `:` rule:
+Another bug in IE is ignoring `.` rule in set with `:`:
 
     input:valid, input.valid    <- not works in IE
-    input.valid, input:valid    <- works in IE
+    input.valid    <- works in IE
 
    
 ### Error messages

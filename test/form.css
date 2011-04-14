@@ -52,32 +52,61 @@ textarea {
 }
 
 /* invalid inputs */
-input.invalid, input:invalid, 
-textarea:invalid, textarea.invalid {
+input.invalid, 
+textarea.invalid {
+    border-color: #DCC !important;
+}
+input:invalid, 
+textarea:invalid{
     border-color: #DCC !important;
 }
 
-input:invalid:focus, input.invalid:focus, 
-textarea:invalid:focus, textarea.invalid:focus{
+input.invalid:focus, 
+textarea.invalid:focus{
+    background-color: #FFF9F9;
+}
+input:invalid:focus, 
+textarea:invalid:focus {
     background-color: #FFF9F9;
 }
 
-/* valid inputs */
-input[type=text].valid, input[type=text]:valid,
-input[type=email].valid, input[type=email]:valid,
-input[type=url].valid, input[type=url]:valid,
-input[type=number].valid, input[type=number]:valid,
-input[type=password].valid, input[type=password]:valid,
-textarea:valid, textarea.valid {
+/* valid inputs for old browsers */
+input[type=text].valid, 
+input[type=email].valid, 
+input[type=url].valid, 
+input[type=number].valid, 
+input[type=password].valid, 
+textarea.valid  
+{
     border-color: #CDC !important;
 }
 
-input[type=text].valid:focus, input[type=text]:valid:focus,
-input[type=email].valid:focus, input[type=email]:valid:focus,
-input[type=url].valid:focus, input[type=url]:valid:focus,
-input[type=number].valid:focus, input[type=number]:valid:focus,
-input[type=password].valid:focus, input[type=password]:valid:focus,
-textarea:valid:focus, textarea.valid:focus {
+/* valid inputs for modern browsers */
+input[type=text]:valid,
+input[type=email]:valid,
+input[type=url]:valid,
+input[type=number]:valid,
+input[type=password]:valid,
+textarea:valid 
+{
+    border-color: #CDC !important;
+}
+
+input[type=text].valid:focus,
+input[type=email].valid:focus,
+input[type=url].valid:focus,
+input[type=number].valid:focus,
+input[type=password].valid:focus,
+textarea.valid:focus {
+    background-color: #F9FFF9;
+}
+
+input[type=text]:valid:focus,
+input[type=email]:valid:focus,
+input[type=url]:valid:focus,
+input[type=number]:valid:focus,
+input[type=password]:valid:focus,
+textarea:valid:focus {
     background-color: #F9FFF9;
 }
 
@@ -98,7 +127,9 @@ input.pending:focus {
 }
 
 /* Standart errors */
-input.invalid:focus ~ .error, textarea.invalid:focus ~ .error,
+input.invalid:focus ~ .error, textarea.invalid:focus ~ .error  {
+    display: block;
+}
 input:invalid:focus ~ .error, textarea:invalid:focus ~ .error  {
     display: block;
 }
