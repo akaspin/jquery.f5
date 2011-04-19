@@ -129,12 +129,13 @@
 				return true;
 			},
 			validators: {}, // Validators
-			poll : 500 // Poll time in milliseconds
+			poll : 500 // Poll time in milliseconds 
 		}
 
 		if (options) {
 			$.extend(true, settings, options);
 		}
+		
 		
 		// Polyfill with f5
 		return this.f5(settings).each(function() {
@@ -146,7 +147,7 @@
 			
 			$form.bind('state', function() {
 				if (!!$(":input", this).filter(function() {
-						return this.validity && this.checkValidity();
+						return this.validity && !this.checkValidity();
 					}).length) {
 					$(':submit', this).attr("disabled", "true");
 				} else {
