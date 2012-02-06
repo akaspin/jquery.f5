@@ -3,12 +3,12 @@
 * Original code: https://github.com/akaspin/jquery.f5
 * Fork by Marcel Beumer: https://github.com/marcelbeumer/jquery.f5
 * Modified by marcel@marcelbeumer.com to:
-* - make it pass jshint
-* - enable f5 based behavior for all browsers by default
-* - removed default error renderer
-* - added show/hide handler for more control over message display
-* - don't block submits for non-native browsers
-* - configurable messages for all browsers
+* Make it pass jshint
+* Enable f5 based behavior for all browsers by default
+* Removed default error renderer
+* Added show/hide handler for more control over message display
+* Don't block submits for non-native browsers
+* Configurable messages for all browsers
 
 # jquery.f5
 
