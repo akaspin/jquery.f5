@@ -2,7 +2,6 @@
 
 * Original code: https://github.com/akaspin/jquery.f5
 * Fork by Marcel Beumer: https://github.com/marcelbeumer/jquery.f5
-* Modified by marcel@marcelbeumer.com to:
 * Make it pass jshint
 * Enable f5 based behavior for all browsers by default
 * Removed default error renderer
