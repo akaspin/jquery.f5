@@ -377,6 +377,9 @@
                     msg = this.validationMessage,
                     fieldType = this.getAttribute('type');
 
+                // no OS messages
+                e.preventDefault();
+
                 if (this.validity && this.validity.customError === false) {
                     for (name in this.validity) {
                         if (this.validity[name] === true) {
@@ -393,14 +396,25 @@
                     }
 
                     if (type === 'patternMismatch') {
-                        msg = opts.messages.pattern || msg;
+                        msg = this.getAttribute('alt') ||
+                                opts.messages.pattern || msg;
                     }
                 }
 
                 opts.error.show($(this.control.error), msg, this);
             });
+
+            // Have a custom valid event, which we need to hide the error.
+            $$.bind('valid', function(e) {
+                opts.error.hide($(this.control.error), this);
+            });
         }
     };
+
+    $.fn.f5fields = function() {
+        return $(inputSelector, this);
+    };
+
 
     $.fn.f5 = function(options) {
         var settings = {
@@ -496,3 +510,4 @@
         });
     };
 })(jQuery);
+
