@@ -10,6 +10,10 @@
  * - enable f5 based behavior for all browsers by default
  * - don't block submits for non-native browsers
  * - configurable messages for all browsers
+ *
+ * Important:
+ * - Poly fill on browsers without validition API.
+ * - So; it does not do a polyfill on others!
  */
 
 (function($) {
@@ -205,8 +209,8 @@
         };
 
         var patterns = {
-            'email': new RegExp("^[a-z0-9_.%+-]+@[0-9a-z.-]" +
-                    "+\\.[a-z.]{2,6}$", "i"),
+            'email': new RegExp("^[a-zA-Z0-9.!#$%&amp;'*+-/=?\\^_`{|}~-]+" +
+                    "@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", "i"),
             'url': new RegExp("[a-z][-\\.+a-z]*:\/\/", "i")
         };
 
@@ -335,7 +339,6 @@
                 }
             };
 
-            // Bind and validate
             if ($.browser.msie) {
                 $$.bind('keyup change', function() {
                     $(this).trigger('input');
@@ -371,6 +374,7 @@
         // Aiming to 'validity' object
         if (!isNative.hostMethod.validity || opts.error.force) {
             $$.get(0).control.error = opts.error.create.apply($$);
+
             $$.bind('invalid', function(e) {
                 var type,
                     name,
@@ -399,6 +403,8 @@
                         msg = this.getAttribute('alt') ||
                                 opts.messages.pattern || msg;
                     }
+
+                    msg = opts.messages[type] || msg;
                 }
 
                 opts.error.show($(this.control.error), msg, this);
@@ -430,8 +436,8 @@
                 email : "Please enter an email address.",
                 url : "Please enter URL",
                 number : "Please enter numeric value",
-                max : "Value too large",
-                min : "Value too small"
+                rangeOverflow : "Value too high",
+                rangeUnderflow : "Value too low"
             },
             error: {
                 force: true,       // Force messages in modern browsers
@@ -510,4 +516,3 @@
         });
     };
 })(jQuery);
-
