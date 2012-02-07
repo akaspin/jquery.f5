@@ -1,3 +1,14 @@
+# Fork
+
+* Original code: https://github.com/akaspin/jquery.f5
+* Fork by Marcel Beumer: https://github.com/marcelbeumer/jquery.f5
+* Make it pass jshint
+* Enable f5 based behavior for all browsers by default
+* Removed default error renderer
+* Added show/hide handler for more control over message display
+* Don't block submits for non-native browsers
+* Configurable messages for all browsers
+
 # jquery.f5
 
 Yep here is another bicycle for HTML 5 forms validation. *jQuery.f5* was 
@@ -99,15 +110,17 @@ forms. In following example `f5` is initialized with default options:
             pattern : "Please match the requested format.",
             email : "Please enter an email address.",
             url : "Please enter URL",
-            number : "Please enter numeric value"
+            number : "Please enter numeric value",
+            max : "Value too large",
+            min : "Value too small"
         },
         error: {
-            force: false,      
-            create: function(){
-                var err = $('<span class="error"></span>');
-                $(this).after(err);
-                return err;
-            }
+            force: true,       // Force messages in modern browsers
+            create: function() {
+                throw new Error("Please define error create function");
+            },
+            show: function($el, msg) {},
+            hide: function($el) {}
         }
     });
 
