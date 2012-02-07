@@ -1,3 +1,7 @@
+/**
+ * jquery.f51 v0.1
+ */
+
 (function($) {
 	
 	/**
