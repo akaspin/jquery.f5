@@ -65,13 +65,13 @@
 				$$.bind('input change', function() {
 					var $$ = $(this);
 					var field = $$.get(0);
-					var value = field.control.value();
+					var value = field.value;
 					var async = field.control.async;
 					
 					var clearAsync = function() {
 						setAsyncState($$, '', opts);
 						clearTimeout(async.pending);
-						async.value = field.control.value();
+						async.value = field.value;
 						form.trigger('state');
 					}
 					
@@ -102,7 +102,7 @@
 						async.pending = setTimeout(function() {
 							op.apply(field, [function(newMsg) {
 								newMsg = newMsg || '';
-								if (field.control.value() == async.value
+								if (field.value == async.value
 										&& isAsyncClear(field) 
 										&& isSysValid(field)) {
 									setAsyncState($$, newMsg, opts);

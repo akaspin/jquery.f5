@@ -11,11 +11,11 @@
 <script type="text/javascript" src="../jquery.f5.js"></script>
 <script type="text/javascript" src="../jquery.f51.js"></script>
         
-<title>jquery.f5 Test</title>
+<title>jquery.f51 Test</title>
 </head>
 
 <body>
-<h1>jquery.f5 Test</h1>
+<h1>jquery.f51 Test</h1>
 
 <form id='f' >
 <fieldset><legend>Text</legend>
@@ -98,14 +98,14 @@ $('#f').ready(function(){
             async3: function(callback) {
                 var that = this;
                 setTimeout(function() {
-                    that.control.value() == 'async' ? 
+                    that.value == 'async' ? 
                         callback() : callback('Not "async".') 
                 }, 3000);
             },
             async1: function(callback) {
                 var that = this;
                 setTimeout(function() {
-                    that.control.value() == 'async' ? 
+                    that.value == 'async' ? 
                         callback() : callback('Not "async".') 
                 }, 1000);
             }

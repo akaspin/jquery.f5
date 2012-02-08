@@ -54,24 +54,6 @@ field and it will be in an invalid state until the custom message is set
 back to an empty string. Details 
 [here](http://dev.w3.org/html5/spec/Overview.html#dom-cva-setcustomvalidity).
 
-    
-## Field value and placeholder
-
-At this time, all implementations of placeholders in old browsers based on the 
-replacement of an empty field value to a value of placeholder. And if you try 
-to get the value of an empty field via element `value` property or jQuery 
-`.val()` function, you get the value of placeholder.
-
-To deal with this `f5` provide element `.control.value()` function:
-
-    > $('your-field').val()
-    < "Some placeholder"
-    > $('your-field').get(0).control.value()
-    < ""
-    
-`f5` also cleans field values before form submit.
-
-
 ## Validation chain
 
 All restrictions of field in HTML5 are arrayed in a chain: `required`, field 
@@ -91,8 +73,7 @@ forms. In following example `f5` is initialized with default options:
         classes : {
             valid : 'valid',
             invalid : 'invalid',
-            required : 'required',
-            placeholder : 'placeholder'
+            required : 'required'
         },
         messages : {
             required : "Please fill out this field.",
@@ -232,7 +213,7 @@ add validator function to `f51` options:
                 var that = this;
                 // Long-long...
                 setTimeout(function(){
-                    (this.control.value() == 'somevalue') ? 
+                    (this.value == 'somevalue') ? 
                         callback() : callback('Value must be "somevalue".');
                 } ,3000);
             }
