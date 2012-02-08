@@ -14,16 +14,10 @@
 		return !!((reFeaturedMethod.test(t) && o[m]) || t == 'unknown');
 	};
 
-//	var isTypeSupported = function(o, t) {
-//		o.setAttribute('type', t);
-//		return o.type !== "text";
-//	};
-
 	// All tests here
 	var prey = document.createElement("input"); // Our prey
 	var isNative = {
 		inputAttr : {
-			placeholder : !!("placeholder" in prey),
 			required : !!('required' in prey),
 			pattern : !!('pattern' in prey),
 			min : !!('min' in prey),
@@ -37,146 +31,6 @@
 			valueAsDate: isHostMethod(prey, 'valueAsDate')
 		}
 	};
-
-	/**
-	 * Placeholder setup. Sorry it's formely copy-paste from 
-	 * awesome http://github.com/danielstocks/jQuery-Placeholder.
-	 * Thank's Daniel Stocks.
-	 * But I don't need many bindings to submit.
-	 */
-	var setupPlaceholder = (function() {
-		if (isNative.inputAttr.placeholder) {
-			// Ok just setup .control.value() function
-			return function ($$, opts) {
-				$$.get(0).control.value = function() {
-					return $$.get(0).value;
-				};
-			}
-		}
-		
-		/**
-		 * Placeholder object.
-		 */
-		var Placeholder = function(input, opts) {
-	        this.input = input;
-	        this.style = opts.classes.placeholder;
-	        if (input.attr('type') == 'password') {
-	            this.handlePassword();
-	        }
-	    }
-	    
-	    Placeholder.prototype = {
-	        show : function(loading) {
-	            // FF and IE saves values when you refresh the page. 
-	        	// If the user refreshes the page with
-	            // the placeholders showing they will be the default 
-	        	// values and the input fields won't be empty.
-	            if (this.input[0].value === '' 
-	            	|| (loading && this.valueIsPlaceholder())) {
-	                if (this.isPassword) {
-	                    try {
-	                        this.input[0].setAttribute('type', 'text');
-	                    } catch (e) {
-	                        this.input.before(this.fakePassword.show())
-	                        .hide();
-	                    }
-	                }
-	                this.input.addClass(this.style);
-	                this.input[0].value = this.input.attr(this.style);
-	            }
-	        },
-	        hide : function() {
-	            if (this.valueIsPlaceholder() 
-	            		&& this.input.hasClass(this.style)) {
-	                this.input.removeClass(this.style);
-	                this.input[0].value = '';
-	                if (this.isPassword) {
-	                    try {
-	                        this.input[0].setAttribute('type', 'password');
-	                    } catch (e) { }
-	                    // Restore focus for Opera and IE
-	                    this.input.show();
-	                    this.input[0].focus();
-	                }
-	            }
-	        },
-	        valueIsPlaceholder : function() {
-	            return this.input[0].value == 
-	            	this.input.attr(this.style);
-	        },
-	        handlePassword: function() {
-	            var input = this.input;
-	            input.attr('realType', 'password');
-	            this.isPassword = true;
-	            // IE < 9 doesn't allow changing the type 
-	            // of password inputs
-	            if ($.browser.msie && input[0].outerHTML) {
-	                var fakeHTML = $(input[0].outerHTML.replace(
-	                		/type=(['"])?password\1/gi, 'type=$1text$1'));
-	                this.fakePassword = fakeHTML.val(
-	                		input.attr(this.style))
-	                		.addClass(this.style).focus(function() {
-	                    input.trigger('focus');
-	                    $(this).hide();
-	                });
-	                $(input[0].form).submit(function() {
-	                    fakeHTML.remove();
-	                    input.show()
-	                });
-	            }
-	        }
-	    };
-	    
-	    // Setup all placeholder bindings if needed
-	    return function($$, opts) {
-	    	var domField = $$.get(0);
-	    	if ($$.attr('placeholder')) {
-	    		// Setup 
-	    		domField.control.value = function() {
-					var phVal = $$.attr('placeholder');
-					var val = $$.val();
-					return (!!phVal 
-							&& $$.hasClass(opts.classes.placeholder) 
-							&& val === phVal) ? "" : val;
-				}
-	    		
-	    		var placeholder = new Placeholder($$, opts);
-	    		placeholder.show(true);
-	    		$$.focus(function() {
-	    			placeholder.hide();
-	    		})
-	    		.blur(function() {
-	    			placeholder.show(false);
-	    		});
-	    		
-	    		// On page refresh, IE doesn't re-populate user input
-	    		// until the window.onload event is fired.
-
-	            if ($.browser.msie) {
-	                $(window).load(function() {
-	                    if($$.val()) {
-	                        $$.removeClass(opts.classes.placeholder);
-	                    }
-	                    placeholder.show(true);
-	                });
-	                // What's even worse, the text cursor disappears
-	                // when tabbing between text inputs, here's a fix
-	                $$.focus(function() {
-	                    if(this.value == "") {
-	                        var range = this.createTextRange();
-	                        range.collapse(true);
-	                        range.moveStart('character', 0);
-	                        range.select();
-	                    }
-	                });
-	            }
-	    	} else {
-	    		domField.control.value = function() {
-	    			return domField.value;
-	    		};
-	    	}
-	    }
-	})();
 	
 	/**
 	 * Low level field setup
@@ -186,7 +40,6 @@
 		if (isNative.hostMethod.validity) {
 			return function() {};
 		}
-		
 		
 		// Hard work no HTML5 Forms support
 		var isPattern = function(value, pattern) {
@@ -235,7 +88,7 @@
 			{ // Required
 				check : $$.attr('required') !== undefined,
 				op : function() {
-					if (domField.control.value() === "") {
+					if (domField.value === "") {
 						domField.validity.valueMissing = true;
 						return opts.messages.required;
 					} else {
@@ -246,7 +99,7 @@
 			{ // E-mail or URL
 				check : fieldType === 'email' || fieldType === 'url',
 				op : function() {
-					var val = domField.control.value();
+					var val = domField.value;
 					if (!isPattern(val, patterns[fieldType]) && val !== "") {
 						domField.validity.typeMismatch = true;
 						return opts.messages[fieldType];
@@ -258,7 +111,7 @@
 			{ // Number
 				check : fieldType === 'number',
 				op : function() {
-					var val = domField.control.value();
+					var val = domField.value;
 					if (isNaN(val) && val !== "") {
 						domField.validity.typeMismatch = true;
 						return opts.messages.number;
@@ -270,7 +123,7 @@
 			{ // Pattern
 				check : $$.attr('pattern') !== undefined,
 				op : function() {
-					var val = domField.control.value();
+					var val = domField.value;
 					var pattern = new RegExp($$.attr('pattern'));
 					if (!pattern.test(val) && val !== "") {
 						domField.validity.patternMismatch = true;
@@ -383,8 +236,7 @@
 			classes : {
 				valid : 'valid',
 				invalid : 'invalid',
-				required : 'required',
-				placeholder : 'placeholder'
+				required : 'required'
 			},
 			messages : {
 				required : "Please fill out this field.",
@@ -418,7 +270,6 @@
 				// Control object
 				$field.get(0).control = {};
 
-				setupPlaceholder($field, settings);
 				setupFieldError($field, settings);
 				lowSetupField($field, settings);
 			});
@@ -437,7 +288,6 @@
 					});
 					return all;
 				};
-				
 			}
 			
 			if (!formCheckVal) {
@@ -452,7 +302,7 @@
 						$(':input:not(:submit):not(:reset)', 
 								$form).each( function() {
 									$this = $(this);
-									$this.val($this.get(0).control.value());
+									$this.val($this.get(0).value);
 								});
 						return true;
 					} else {
