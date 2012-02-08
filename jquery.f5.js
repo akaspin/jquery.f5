@@ -1,5 +1,5 @@
 /**
- * jquery.f5 v0.1
+ * jquery.f5 v0.2
  * html5 forms module. Yep it's another bicycle. 
  * Dependencies: jQuery
  */

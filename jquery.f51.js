@@ -1,5 +1,5 @@
 /**
- * jquery.f51 v0.1
+ * jquery.f51 v0.2
  */
 
 (function($) {
