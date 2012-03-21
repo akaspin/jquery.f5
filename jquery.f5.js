@@ -213,7 +213,8 @@
 		// Aiming to 'validity' object
 		if (!isNative.hostMethod.validity || opts.error.force) {
 			$$.get(0).control.error = opts.error.create.apply($$);
-			$$.bind('invalid', function() {
+			$$.bind('invalid', function(event) {
+				event.preventDefault();
 				$(this.control.error).text(this.validationMessage);
 			})
 			if ($.browser.msie) {
