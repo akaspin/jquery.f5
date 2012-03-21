@@ -213,8 +213,10 @@
 		// Aiming to 'validity' object
 		if (!isNative.hostMethod.validity || opts.error.force) {
 			$$.get(0).control.error = opts.error.create.apply($$);
-			$$.bind('invalid', function() {
+			$$.bind('invalid', function(event) {
 				$(this.control.error).text(this.validationMessage);
+				event.preventDefault();
+				$(this).focus();
 			})
 			if ($.browser.msie) {
 				// IE not redraw CSS "+" or "~" rules
