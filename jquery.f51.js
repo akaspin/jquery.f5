@@ -136,9 +136,8 @@
 			poll : 500 // Poll time in milliseconds 
 		}
 
-		if (options) {
-			$.extend(true, settings, options);
-		}
+		options = !!options ? options : {};
+        options = $.extend(true, settings, options);
 		
 		
 		// Polyfill with f5
