@@ -259,9 +259,8 @@
 			}
 		};
 
-		if (options) {
-			$.extend(true, settings, options);
-		}
+		options = !!options ? options : {};
+		options = $.extend(true, settings, options);
 
 		return this.filter('form').each(function() {
 			var $form = $(this);
